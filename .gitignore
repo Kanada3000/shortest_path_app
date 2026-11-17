@@ -7,6 +7,10 @@
 .buildlog/
 .history
 
+# IDE settings
+.idea/
+.vscode/
+
 # Flutter repo-specific
 /bin/cache/
 /bin/internal/bootstrap.bat
