@@ -1,37 +1,43 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/calculating_data.dart';
 import '../../../results/presentation/screens/result_list_screen.dart';
 
-class ProcessScreen extends StatelessWidget {
+class ProcessScreen extends StatefulWidget {
   const ProcessScreen({super.key});
 
   @override
+  State<ProcessScreen> createState() => _ProcessScreenState();
+}
+
+class _ProcessScreenState extends State<ProcessScreen> {
+  @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text("Process Screen")),
-    floatingActionButton: ElevatedButton(
-      onPressed: () => goNextPage(context),
-      child: const Text("Send results to server"),
-    ),
-    floatingActionButtonLocation: .centerFloat,
-    body: const Center(
+    body: Padding(
+      padding: const EdgeInsets.only(bottom: 32),
       child: Column(
-        mainAxisSize: .min,
+        mainAxisSize: .max,
+        mainAxisAlignment: .end,
         children: [
-          Text("Calculating..."),
-          SizedBox(height: 8),
-          Text("90%"),
-          Divider(),
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: CircularProgressIndicator.adaptive(
-              value: 0.9,
-              strokeWidth: 3,
-            ),
+          const Spacer(),
+          CalculatingData(),
+          const Divider(),
+          progressCircle(),
+          const Spacer(),
+          ElevatedButton(
+            onPressed: () => goNextPage(context),
+            child: const Text("Send results to server"),
           ),
         ],
       ),
     ),
+  );
+
+  Widget progressCircle() => SizedBox(
+    width: 100,
+    height: 100,
+    child: CircularProgressIndicator(strokeWidth: 3),
   );
 
   void goNextPage(BuildContext context) {
