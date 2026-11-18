@@ -13,6 +13,11 @@ class TaskRepositoryImpl implements TaskRepository {
   TaskRepositoryImpl(this.taskRemoteDataSource);
 
   @override
+  void setUrl(String url) {
+    taskRemoteDataSource.baseUrl = url.trim();
+  }
+
+  @override
   Future<List<Task>> getTasks() async {
     try {
       final response = await taskRemoteDataSource.fetchData();

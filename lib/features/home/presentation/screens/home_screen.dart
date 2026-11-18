@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'process_screen.dart';
-import '../widgets/url_input.dart';
+import '../widgets/url_form.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,19 +9,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text("Home Screen")),
-    floatingActionButton: ElevatedButton(
-      onPressed: () => goNextPage(context),
-      child: const Text("Start counting process"),
-    ),
-    floatingActionButtonLocation: .centerFloat,
     body: const Padding(
       padding: EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: .start,
+        mainAxisSize: .min,
         children: [
           Text("Set valid API base in order to continue"),
           SizedBox(height: 16),
-          UrlInput(),
+          Flexible(child: UrlForm()),
         ],
       ),
     ),

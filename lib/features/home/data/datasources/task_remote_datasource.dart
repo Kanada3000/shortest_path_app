@@ -6,12 +6,14 @@ import '../models/task_dto.dart';
 import '../models/response_dto.dart';
 
 abstract class TaskRemoteDataSource {
+  String baseUrl = "";
   Future<ResponseDto<TaskDto>> fetchData();
   Future<ResponseDto<AnswerDto>> postData(List<Map<String, dynamic>> json);
 }
 
 class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
-  final String baseUrl = "https://flutter.webspark.dev";
+  @override
+  String baseUrl = "";
 
   @override
   Future<ResponseDto<TaskDto>> fetchData() async {
