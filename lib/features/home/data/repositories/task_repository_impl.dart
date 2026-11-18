@@ -23,7 +23,7 @@ class TaskRepositoryImpl implements TaskRepository {
       final response = await taskRemoteDataSource.fetchData();
 
       if (response.error == true) {
-        // TODO: handle errors
+        throw Exception("Error: ${response.message}");
       }
 
       final tasks = response.data ?? [];
@@ -40,7 +40,7 @@ class TaskRepositoryImpl implements TaskRepository {
       final response = await taskRemoteDataSource.postData(json);
 
       if (response.error == true) {
-        //TODO: hadle error
+        throw Exception("Error: ${response.message}");
       }
 
       final answers = response.data ?? [];
