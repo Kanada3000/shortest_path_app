@@ -26,39 +26,44 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('Show default url', (tester) async {
-    await tester.pumpWidget(buildTestApp());
+  group('Home Screen', () {
+    testWidgets('Show default url', (tester) async {
+      await tester.pumpWidget(buildTestApp());
 
-    expect(
-      find.text('https://flutter.webspark.dev/flutter/api'),
-      findsOneWidget,
-    );
-  });
+      expect(
+        find.text('https://flutter.webspark.dev/flutter/api'),
+        findsOneWidget,
+      );
+    });
 
-  testWidgets('enter valid url', (tester) async {
-    await tester.pumpWidget(buildTestApp());
-    await enterUrlAndSubmit(tester, 'https://flutter.webspark.dev/flutter/api');
-    await tester.pump(const Duration(seconds: 1));
+    testWidgets('enter valid url', (tester) async {
+      await tester.pumpWidget(buildTestApp());
+      await enterUrlAndSubmit(
+        tester,
+        'https://flutter.webspark.dev/flutter/api',
+      );
+      await tester.pump(const Duration(seconds: 1));
 
-    expect(find.byType(ProcessScreen), findsOneWidget);
-    expect(fakeRepo.lastUrl, 'https://flutter.webspark.dev/flutter/api');
-  });
+      expect(find.byType(ProcessScreen), findsOneWidget);
+      expect(fakeRepo.lastUrl, 'https://flutter.webspark.dev/flutter/api');
+    });
 
-  testWidgets('error if empty url', (tester) async {
-    await tester.pumpWidget(buildTestApp());
-    await enterUrlAndSubmit(tester, "");
+    testWidgets('error if empty url', (tester) async {
+      await tester.pumpWidget(buildTestApp());
+      await enterUrlAndSubmit(tester, "");
 
-    expect(find.text('Enter URL'), findsOneWidget);
-    expect(find.byType(ProcessScreen), findsNothing);
-    expect(fakeRepo.lastUrl, isNull);
-  });
+      expect(find.text('Enter URL'), findsOneWidget);
+      expect(find.byType(ProcessScreen), findsNothing);
+      expect(fakeRepo.lastUrl, isNull);
+    });
 
-  testWidgets('error if invalid url', (tester) async {
-    await tester.pumpWidget(buildTestApp());
-    await enterUrlAndSubmit(tester, "acb");
+    testWidgets('error if invalid url', (tester) async {
+      await tester.pumpWidget(buildTestApp());
+      await enterUrlAndSubmit(tester, "acb");
 
-    expect(find.text('Enter valid URL'), findsOneWidget);
-    expect(find.byType(ProcessScreen), findsNothing);
-    expect(fakeRepo.lastUrl, isNull);
+      expect(find.text('Enter valid URL'), findsOneWidget);
+      expect(find.byType(ProcessScreen), findsNothing);
+      expect(fakeRepo.lastUrl, isNull);
+    });
   });
 }

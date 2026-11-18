@@ -31,7 +31,9 @@ class FieldMap extends StatelessWidget {
         child: Center(
           child: Text(
             "($j,$i)",
-            style: TextStyle(color: symbol == 'X' ? Colors.white : null),
+            style: TextStyle(
+              color: symbol == 'X' ? Colors.white : Colors.black,
+            ),
           ),
         ),
       ),
