@@ -18,7 +18,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
   @override
   Future<ResponseDto<TaskDto>> fetchData() async {
     final client = HttpClient();
-    final Uri uri = Uri.parse("$baseUrl/flutter/api");
+    final Uri uri = Uri.parse(baseUrl);
     try {
       final request = await client.getUrl(uri);
       request.headers.set(HttpHeaders.contentTypeHeader, "application/json");
@@ -43,7 +43,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
     List<Map<String, dynamic>> json,
   ) async {
     final client = HttpClient();
-    final Uri uri = Uri.parse("$baseUrl/flutter/api");
+    final Uri uri = Uri.parse(baseUrl);
     try {
       final request = await client.postUrl(uri);
       request.headers.set(HttpHeaders.contentTypeHeader, "application/json");

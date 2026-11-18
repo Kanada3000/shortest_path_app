@@ -6,7 +6,7 @@ class Task {
   final Point start;
   final Point end;
 
-  Task({
+  const Task({
     required this.id,
     required this.field,
     required this.start,
