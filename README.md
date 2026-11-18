@@ -45,3 +45,13 @@ lib/
     results/
       presentation/    # results list, preview screen
 ```
+
+## Screenshots
+
+<p>
+  <img src="docs/screenshots/home.png" width="200" alt="Home screen">
+  <img src="docs/screenshots/process_calculating.png" width="200" alt="Process screen: calculating">
+  <img src="docs/screenshots/process_checking.png" width="200" alt="Process screen: checking">
+  <img src="docs/screenshots/results.png" width="200" alt="Results screen">
+  <img src="docs/screenshots/preview.png" width="200" alt="Preview screen">
+</p>
