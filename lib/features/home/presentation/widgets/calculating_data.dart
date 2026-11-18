@@ -17,6 +17,7 @@ class CalculatingData extends StatefulWidget {
 
 class _CalculatingDataState extends State<CalculatingData> {
   late final Stream<double?> _taskResultsStream;
+  bool _isInit = false;
 
   Stream<double?> _loadData(TaskRepository repo) async* {
     final tasks = await repo.getTasks();
@@ -33,7 +34,7 @@ class _CalculatingDataState extends State<CalculatingData> {
       );
 
       processedTask.add(PathfindResult(task: task, path: path));
-      yield (i + 1) * 100 / tasks.length;
+      yield (i + 1) / tasks.length;
     }
     widget.onCalculatingDone(processedTask);
     yield 1.0;
@@ -42,35 +43,37 @@ class _CalculatingDataState extends State<CalculatingData> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _taskResultsStream = _loadData(RepositoryScope.of(context));
+    if (!_isInit) {
+      _taskResultsStream = _loadData(RepositoryScope.of(context));
+      _isInit = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) => StreamBuilder(
     stream: _taskResultsStream,
     builder: (context, snapshot) {
-      if (snapshot.connectionState == .waiting) {
-        return body("Fetching data...", 0);
-      }
       if (snapshot.hasError) {
-        //TODO: handle error
-        return Text("ERROR: ${snapshot.error}");
+        return Text("Error during proceed data: ${snapshot.error}");
+      }
+      if (snapshot.connectionState == .done) {
+        return body(
+          "All calculations has finished, you can send your results to server",
+          100,
+        );
       }
       final state = snapshot.data;
-      if (state != null && state != 1.0) {
-        return body("Calculating...", state.round());
+      if (state != null && state < 1.0) {
+        return body("Calculating...", (state * 100).round());
       }
-
-      return body(
-        "All calculations has finished, you can send your results to server",
-        100,
-      );
+      return body("Fetching data...", 0);
     },
   );
 
   Widget body(String text, int percent) {
     return Column(
       mainAxisSize: .min,
+      crossAxisAlignment: .center,
       spacing: 8,
       children: [
         Padding(
