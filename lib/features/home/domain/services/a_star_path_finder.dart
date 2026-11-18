@@ -12,6 +12,9 @@ class AStarPathFinder {
     required Point end,
   }) {
     final field = _stringFieldToInt(stringField);
+    if (!_valid(field, start, end)) return [];
+
+    // start
     final openSet = Set<_Node>.from({});
     final closedSet = Set<_Node>.from({});
     final allNodes = Map<Point, _Node>.from({});
@@ -99,7 +102,16 @@ class AStarPathFinder {
         point.x >= field[0].length ||
         point.y < 0 ||
         point.y >= field.length ||
-        field[point.x][point.y] == 1;
+        field[point.y][point.x] == 1;
+  }
+
+  static bool _valid(List<List<int>> field, Point start, Point end) {
+    if (field.isEmpty || field[0].isEmpty) return false;
+    if (_outOfBoundsOrBarrier(field, start) ||
+        _outOfBoundsOrBarrier(field, end)) {
+      return false;
+    }
+    return true;
   }
 }
 
