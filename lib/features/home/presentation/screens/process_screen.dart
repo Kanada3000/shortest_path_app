@@ -11,9 +11,9 @@ class ProcessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text("Process Screen")),
-    body: Padding(
-      padding: const EdgeInsets.only(bottom: 32),
-      child: const _ProcessScreenBody(),
+    body: const Padding(
+      padding: EdgeInsets.only(bottom: 32),
+      child: _ProcessScreenBody(),
     ),
   );
 }
@@ -26,65 +26,66 @@ class _ProcessScreenBody extends StatefulWidget {
 }
 
 class _ProcessScreenBodyState extends State<_ProcessScreenBody> {
-  final ValueNotifier<List<PathfindResult>?> resultsVn = ValueNotifier(null);
-  final ValueNotifier<bool> isLoadingVn = ValueNotifier(false);
-
-  void _handleCalculatingDone(List<PathfindResult> list) {
-    resultsVn.value = list;
-  }
+  final _resultsVn = ValueNotifier<List<PathfindResult>?>(null);
+  final _isLoadingVn = ValueNotifier<bool>(false);
+  final _errorVn = ValueNotifier<String?>(null);
 
   @override
   void dispose() {
-    resultsVn.dispose();
-    isLoadingVn.dispose();
+    _resultsVn.dispose();
+    _isLoadingVn.dispose();
+    _errorVn.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Center(
-    child: Column(
-      mainAxisSize: .max,
-      mainAxisAlignment: .end,
-      children: [
-        const Spacer(),
-        CalculatingData(onCalculatingDone: _handleCalculatingDone),
-        ValueListenableBuilder(
-          valueListenable: resultsVn,
-          builder: (resultsContext, results, _) => Expanded(
-            child: Column(
+  Widget build(BuildContext context) => Column(
+    mainAxisSize: .max,
+    mainAxisAlignment: .end,
+    crossAxisAlignment: .stretch,
+    children: [
+      const Spacer(),
+      CalculatingData(
+        onCalculatingDone: (list) => _resultsVn.value = list,
+      ),
+      Expanded(
+        child: ValueListenableBuilder(
+          valueListenable: _resultsVn,
+          builder: (resultsContext, results, _) {
+            if (results == null) return const SizedBox.shrink();
+            return Column(
               children: [
-                if (results != null) ...[
-                  const Divider(),
-                  ValueListenableBuilder(
-                    valueListenable: isLoadingVn,
-                    builder: (isLoadingContext, isLoading, _) => Expanded(
-                      child: Column(
-                        children: [
-                          if (isLoading == true)
-                            const SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: CircularProgressIndicator(strokeWidth: 3),
-                            ),
-                          const Spacer(),
-                          ElevatedButton(
-                            onPressed: isLoading
-                                ? null
-                                : () => _onPress(isLoadingContext, results),
-                            child: const Text("Send results to server"),
-                          ),
-                        ],
-                      ),
+                const Divider(),
+                // Error block
+                ValueListenableBuilder(
+                  valueListenable: _errorVn,
+                  builder: (errorContext, error, _) =>
+                      error != null ? Text(error) : const Text(""),
+                ),
+                // Indicator + Button Block
+                Expanded(
+                  child: ValueListenableBuilder(
+                    valueListenable: _isLoadingVn,
+                    builder: (isLoadingContext, isLoading, _) => Column(
+                      children: [
+                        if (isLoading == true) const _ProgressIndicator(),
+                        const Spacer(),
+                        ElevatedButton(
+                          onPressed: isLoading
+                              ? null
+                              : () => _onPress(isLoadingContext, results),
+                          child: const Text("Send results to server"),
+                        ),
+                      ],
                     ),
                   ),
-                ] else
-                  const Spacer(),
+                ),
               ],
-            ),
-          ),
+            );
+          },
         ),
-      ],
-    ),
+      ),
+    ],
   );
 
   Future<void> _onPress(
@@ -92,16 +93,26 @@ class _ProcessScreenBodyState extends State<_ProcessScreenBody> {
     List<PathfindResult>? results,
   ) async {
     try {
+      _errorVn.value = null;
       if (results == null) return;
-      isLoadingVn.value = true;
-      final response = await RepositoryScope.of(context).checkTasks(results!);
+
+      _isLoadingVn.value = true;
+
+      final response = await RepositoryScope.of(context).checkTasks(results);
+      if (response.any((r) => !r.correct)) {
+        _errorVn.value = "The results have incorrect answer";
+        return;
+      }
+
       if (!context.mounted) return;
       _goNextPage(context, results);
     } catch (e) {
-      //TODO: Handle error
-      print("ERROR-$e");
+      if (!mounted) return;
+      _errorVn.value = "Error during result sending: $e";
     } finally {
-      isLoadingVn.value = false;
+      if (mounted) {
+        _isLoadingVn.value = false;
+      }
     }
   }
 
@@ -111,4 +122,14 @@ class _ProcessScreenBodyState extends State<_ProcessScreenBody> {
       MaterialPageRoute(builder: (_) => ResultListScreen(results: results!)),
     );
   }
+}
+
+class _ProgressIndicator extends StatelessWidget {
+  const _ProgressIndicator();
+  @override
+  Widget build(BuildContext context) => const SizedBox(
+    width: 100,
+    height: 100,
+    child: CircularProgressIndicator(strokeWidth: 3),
+  );
 }
