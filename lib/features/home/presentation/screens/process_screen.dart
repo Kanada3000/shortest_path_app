@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../results/presentation/screens/result_list_screen.dart';
 import '../../domain/entities/pathfind_result.dart';
 import '../widgets/calculating_data.dart';
-import '../providers/repository_provider.dart';
+import '../providers/repository_scope.dart';
 
 class ProcessScreen extends StatelessWidget {
   const ProcessScreen({super.key});

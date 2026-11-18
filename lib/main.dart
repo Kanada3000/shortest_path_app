@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'features/home/data/datasources/task_remote_datasource.dart';
 import 'features/home/data/repositories/task_repository_impl.dart';
-import 'features/home/presentation/providers/repository_provider.dart';
+import 'features/home/presentation/providers/repository_scope.dart';
 import 'features/home/presentation/screens/home_screen.dart';
 
 void main() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shortest_path_app/core/utils/url_validator.dart';
 
-import '../providers/repository_provider.dart';
+import '../providers/repository_scope.dart';
 import '../screens/process_screen.dart';
 
 class UrlForm extends StatefulWidget {
@@ -13,7 +14,7 @@ class UrlForm extends StatefulWidget {
 class _UrlFormState extends State<UrlForm> {
   final _formKey = GlobalKey<FormState>();
   final _controller = TextEditingController(
-    text: "https://flutter.webspark.dev",
+    text: "https://flutter.webspark.dev/flutter/api",
   );
 
   @override
@@ -36,14 +37,7 @@ class _UrlFormState extends State<UrlForm> {
               child: TextFormField(
                 controller: _controller,
                 keyboardType: .url,
-                validator: (v) {
-                  if (v == null || v.isEmpty) return "Enter URL";
-                  final uri = Uri.tryParse(v);
-                  if (uri == null || !uri.hasScheme) {
-                    return "Enter valid URL";
-                  }
-                  return null;
-                },
+                validator: UrlValidator.validate,
               ),
             ),
           ],

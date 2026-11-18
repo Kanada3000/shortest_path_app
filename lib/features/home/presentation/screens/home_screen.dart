@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'process_screen.dart';
 import '../widgets/url_form.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,11 +21,4 @@ class HomeScreen extends StatelessWidget {
       ),
     ),
   );
-
-  void goNextPage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const ProcessScreen()),
-    );
-  }
 }

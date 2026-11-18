@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../../domain/services/a_star_path_finder.dart';
 import '../../domain/entities/pathfind_result.dart';
-import '../providers/repository_provider.dart';
+import '../providers/repository_scope.dart';
 
 class CalculatingData extends StatefulWidget {
   final ValueChanged<List<PathfindResult>> onCalculatingDone;

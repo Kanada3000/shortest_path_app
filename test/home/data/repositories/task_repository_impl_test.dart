@@ -8,7 +8,7 @@ import 'package:shortest_path_app/features/home/domain/entities/pathfind_result.
 import 'package:shortest_path_app/features/home/domain/entities/point.dart';
 import 'package:shortest_path_app/features/home/domain/entities/task.dart';
 
-import '../../fakes/fake_task_remote_datasource.dart';
+import '../../../fakes/fake_task_remote_datasource.dart';
 
 void main() {
   late FakeTaskRemoteDatasource fakeTaskRemoteDatasource;
