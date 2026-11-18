@@ -18,17 +18,17 @@ class ResultListScreen extends StatelessWidget {
   );
 
   Widget button(BuildContext context, int i) =>
-      InkWell(onTap: () => goNextPage(context), child: item(i));
+      InkWell(onTap: () => goNextPage(context, i), child: item(i));
 
   Widget item(int i) => Padding(
     padding: const EdgeInsets.all(8.0),
     child: Center(child: Text(results[i].pathToString)),
   );
 
-  void goNextPage(BuildContext context) {
+  void goNextPage(BuildContext context, int i) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const PreviewScreen()),
+      MaterialPageRoute(builder: (_) => PreviewScreen(result: results[i])),
     );
   }
 }

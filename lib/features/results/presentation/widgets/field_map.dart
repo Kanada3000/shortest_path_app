@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 
-class FieldMap extends StatelessWidget {
-  final List<String> field;
-  const FieldMap({super.key, required this.field});
+import '../../../home/domain/entities/pathfind_result.dart';
 
-  // static const field = ["XXXE", "X.OX", "XO.X", "SXXX"];
+class FieldMap extends StatelessWidget {
+  final PathfindResult result;
+  const FieldMap({super.key, required this.result});
 
   @override
   Widget build(BuildContext context) => Column(
     mainAxisSize: .min,
-    children: field.indexed
-        .map(
-          ((int, String) rowEntry) => Row(
-            mainAxisSize: .max,
-            children: rowEntry.$2
-                .split("")
-                .indexed
-                .map(
-                  ((int, String) itemEntry) =>
-                      tile(rowEntry.$1, itemEntry.$1, itemEntry.$2),
-                )
-                .toList(),
-          ),
-        )
-        .toList(),
+    children: [
+      for (final (i, row) in result.fieldWithPath.indexed)
+        Row(
+          mainAxisSize: .max,
+          children: [
+            for (final (j, item) in row.indexed) tile(i, j, item),
+          ],
+        ),
+    ],
   );
 
   Widget tile(int i, int j, String symbol) => Expanded(
@@ -36,7 +30,7 @@ class FieldMap extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            "($i,$j)",
+            "($j,$i)",
             style: TextStyle(color: symbol == 'X' ? Colors.white : null),
           ),
         ),
