@@ -7,4 +7,8 @@ class PointDto {
   factory PointDto.fromJson(Map<String, dynamic> json) {
     return PointDto(x: json['x'] as int?, y: json['y'] as int?);
   }
+
+  Map<String, dynamic> toJson() {
+    return {'x': x, 'y': y};
+  }
 }

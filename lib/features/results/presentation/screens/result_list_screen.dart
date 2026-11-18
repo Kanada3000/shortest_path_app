@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../../home/domain/entities/pathfind_result.dart';
 import 'preview_screen.dart';
 
 class ResultListScreen extends StatelessWidget {
-  const ResultListScreen({super.key});
+  final List<PathfindResult> results;
+  const ResultListScreen({super.key, required this.results});
 
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text("Result List Screen")),
     body: ListView.separated(
-      itemCount: 3,
+      itemCount: results.length,
       itemBuilder: (listContext, i) => button(listContext, i),
       separatorBuilder: (_, _) => const Divider(),
     ),
@@ -20,7 +22,7 @@ class ResultListScreen extends StatelessWidget {
 
   Widget item(int i) => Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Center(child: Text("item: $i")),
+    child: Center(child: Text(results[i].pathToString)),
   );
 
   void goNextPage(BuildContext context) {

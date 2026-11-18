@@ -1,17 +1,23 @@
-import 'task_dto.dart';
-
-class ResponseDto {
+class ResponseDto<T> {
   final bool? error;
   final String? message;
-  final List<TaskDto>? data;
+  final List<T>? data;
 
   ResponseDto({this.error, this.message, this.data});
 
-  factory ResponseDto.fromJson(Map<String, dynamic> json) {
-    return ResponseDto(
+  factory ResponseDto.fromJson(
+    Map<String, dynamic> json,
+    T Function(Map<String, dynamic> json) fromJsonT,
+  ) {
+    final rawData = json['data'] as List<dynamic>?;
+    return ResponseDto<T>(
       error: json['error'],
       message: json['message'],
-      data: List<TaskDto>.from(json['data']?.map((j) => TaskDto.fromJson(j))),
+      data: rawData
+          ?.map(
+            (j) => fromJsonT(j as Map<String, dynamic>),
+          )
+          .toList(),
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class FieldMap extends StatelessWidget {
-  const FieldMap({super.key});
+  final List<String> field;
+  const FieldMap({super.key, required this.field});
 
-  static const field = ["XXXE", "X.OX", "XO.X", "SXXX"];
+  // static const field = ["XXXE", "X.OX", "XO.X", "SXXX"];
 
   @override
   Widget build(BuildContext context) => Column(

@@ -5,3 +5,5 @@ analyzer:
     - build/**
     - android/**
     - ios/**
+formatter:
+  trailing_commas: preserve
