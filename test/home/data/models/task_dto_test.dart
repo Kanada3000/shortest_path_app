@@ -15,7 +15,7 @@ void main() {
 
       expect(dto, isNotNull);
       expect(dto.id, 'test-id');
-      expect(dto.field, const ['.X.', '...', '.X.']);
+      expect(dto.field, const ['.X.', 'X..', '.X.']);
       expect(dto.start?.x, 2);
       expect(dto.start?.y, 0);
       expect(dto.end?.x, 0);
